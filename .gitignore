@@ -1,0 +1,8 @@
+/vendor
+/.idea
+/logs/*
+Homestead.json
+Homestead.yaml
+.env
+.phpunit.result.cache
+/tank_errors.log
