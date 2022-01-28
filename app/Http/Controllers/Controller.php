@@ -8,14 +8,14 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    private const STAT_NAME = 'stat2';
+    private const STAT_NAME = 'countries-stat';
 
     public function add(string $countryCode): JsonResponse
     {
         /** @var Redis $redis */
         $redis = app('redis');
-        $counter = (int)$redis->hGet('stat2', $countryCode) + 1;
-        $redis->hSet('stat2', $countryCode, $counter);
+        $counter = (int)$redis->hGet(self::STAT_NAME, $countryCode) + 1;
+        $redis->hSet(self::STAT_NAME, $countryCode, $counter);
 
         return response()->json();
     }
