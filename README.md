@@ -10,5 +10,5 @@
 * `REDIS_DB`
 
 ## Endpoints
-* GET: `/api/add/{countryCode}`
-* GET: `/api/list`
+* PUT: `/api/{countryCode}`
+* GET: `/api/`

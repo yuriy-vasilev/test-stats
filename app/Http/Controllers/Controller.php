@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\CountryStatisticsRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-use Redis;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
-    private const STAT_NAME = 'countries-stat';
+    private $repo;
 
-    public function add(string $countryCode): JsonResponse
+    public function __construct(CountryStatisticsRepositoryInterface $repo)
     {
-        /** @var Redis $redis */
-        $redis = app('redis');
-        $counter = (int)$redis->hGet(self::STAT_NAME, $countryCode) + 1;
-        $redis->hSet(self::STAT_NAME, $countryCode, $counter);
+        $this->repo = $repo;
+    }
+
+    public function update(string $countryCode): JsonResponse
+    {
+        $this->repo->increase($countryCode);
 
         return response()->json();
     }
 
-    public function list(): JsonResponse
+    public function index(): JsonResponse
     {
-        /** @var Redis $redis */
-        $redis = app('redis');
-
-        return response()->json($redis->hGetAll(self::STAT_NAME));
+        return response()->json($this->repo->getList());
     }
 }
